@@ -1,0 +1,41 @@
+# Log Transporter Configuration
+
+# Source servers to collect logs from
+sources:
+  - name: "web-server-1"
+    host: "192.168.1.10"
+    username: "loguser"
+    port: 22
+    ssh_key: "/app/keys/source1_key"
+    log_paths:
+      - "/var/log/nginx/access.log"
+      - "/var/log/nginx/error.log"
+      - "/var/log/syslog"
+
+  - name: "app-server-1"
+    host: "192.168.1.20"
+    username: "loguser"
+    port: 22
+    ssh_key: "/app/keys/source2_key"
+    log_paths:
+      - "/var/log/myapp/app.log"
+      - "/var/log/myapp/error.log"
+
+  - name: "db-server-1"
+    host: "192.168.1.30"
+    username: "loguser"
+    port: 22
+    ssh_key: "/app/keys/source3_key"
+    log_paths:
+      - "/var/log/postgresql/postgresql.log"
+
+# Destination server configuration
+destination:
+  host: "10.0.0.50"
+  username: "logcollector"
+  port: 22
+  ssh_key: "/app/keys/dest_key"
+  base_path: "/logs/collected"
+
+# Transfer interval in seconds (for continuous mode)
+interval: 300

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  log-transporter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: log-transporter
+    restart: unless-stopped
+    
+    volumes:
+      - ./config:/app/config:ro
+      - ./keys:/app/keys:ro
+      - ./state:/app/state
+    
+    command: ["--config", "/app/config/config.yaml", "--continuous"]
+    
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 64M
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    environment:
+      - TZ=UTC
+      - PYTHONUNBUFFERED=1
